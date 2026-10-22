@@ -1,10 +1,10 @@
 {
   "canonicalRepository": "MalenkiySolovey/solovey-ui",
-  "panelContractCommit": "f989ce672d72a4fddf8b5d6b7ea9d4f89a1a054a",
+  "panelContractCommit": "72753f9f37b134e9949a766496b658415401e0f7",
   "contractVersion": "solovey.management/v1",
-  "manifestSHA256": "58ecd4305eca60b48d3eeef2f824682ff709539faea67ca2e4e50c0932242ba5",
-  "schemaSHA256": "72d89a9c0c2f908479cecf6492a58e3d8b2f5b1cb63e7708efb534562c4c57e5",
+  "manifestSHA256": "2ee07fd0dfd81ca8b3c9789895016ba951d05bdf856e8b57c511dbee23f5e98b",
+  "schemaSHA256": "629e9397122bb06e3534cd5753137d6acd4f51016bf96a038558bb0f5e434b8b",
   "generatedSHA256": "90d6b8bfd66a2167b410f4044f8b1ba05653a9dd8d971d3ef24f67b3dde35aec",
-  "vectorsSHA256": "3f0fca968cdbd1fd1fbfd5091e1107d8de4464472815467d3c07781a78b79af5",
-  "bundleSHA256": "7f46ca9786ff2bdb6849c68ff50d10a9ba9c85807d010fc99c6fb148ee8cf622"
+  "vectorsSHA256": "1e3e87c62ad4bbdd47a1c34d41b0a0be156d9c76851ecef61bf2d9fde3ab90ff",
+  "bundleSHA256": "4c483dfc1c1b3a2d9250c5a2b0c8b6c5a8f864f2103c91ab331733061444c922"
 }

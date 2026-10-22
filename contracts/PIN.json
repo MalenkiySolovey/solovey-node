@@ -1,0 +1,10 @@
+{
+  "canonicalRepository": "MalenkiySolovey/solovey-ui",
+  "panelContractCommit": "f989ce672d72a4fddf8b5d6b7ea9d4f89a1a054a",
+  "contractVersion": "solovey.management/v1",
+  "manifestSHA256": "58ecd4305eca60b48d3eeef2f824682ff709539faea67ca2e4e50c0932242ba5",
+  "schemaSHA256": "72d89a9c0c2f908479cecf6492a58e3d8b2f5b1cb63e7708efb534562c4c57e5",
+  "generatedSHA256": "90d6b8bfd66a2167b410f4044f8b1ba05653a9dd8d971d3ef24f67b3dde35aec",
+  "vectorsSHA256": "3f0fca968cdbd1fd1fbfd5091e1107d8de4464472815467d3c07781a78b79af5",
+  "bundleSHA256": "7f46ca9786ff2bdb6849c68ff50d10a9ba9c85807d010fc99c6fb148ee8cf622"
+}

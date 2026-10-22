@@ -66,7 +66,7 @@ func newFixtureOwner(input commandCase) *fixtureOwner {
 // Grants here are prevalidated trusted test inputs. Decoding ManagementGrant
 // JSON alone is never authentication. A future authority must verify it first.
 func (owner *fixtureOwner) admit(command wire.Command) wire.CommandResult {
-	result := wire.CommandResult{ContractVersion: wire.Version, CommandID: command.CommandID, Host: command.Host, Resource: command.Resource,
+	result := wire.CommandResult{ContractVersion: wire.Version, CommandID: command.CommandID, Host: owner.context.Host, Resource: owner.context.Resource,
 		Status: "REJECTED", Reason: "INVALID_INPUT", ObservedRevision: owner.revision, Generation: owner.context.Generation, CorrelationID: command.CorrelationID}
 	reject := func(reason wire.ReasonCode) wire.CommandResult { result.Reason = reason; return result }
 	if err := wire.ValidateCommand(command); err != nil {
@@ -75,6 +75,11 @@ func (owner *fixtureOwner) admit(command wire.Command) wire.CommandResult {
 			reason = "INVALID_INPUT"
 		}
 		return reject(reason)
+	}
+	// This fixture proves the existing backup.restore revision/replay boundary.
+	// Other catalog Actions require their own owner capability and admission.
+	if command.ActionID != "backup.restore" {
+		return reject("UNSUPPORTED")
 	}
 	if command.Host != owner.context.Host || command.Resource != owner.context.Resource {
 		return reject("PERMISSION_DENIED")

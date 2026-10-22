@@ -22,8 +22,14 @@ executes shared shape, serialization, reason and digest vectors. The in-memory
 `conformance` tests independently exercise trusted fixture grant binding,
 revision admission, one-use consumption, replay and ambiguous-delivery retry.
 The fixture map is not a credential store or an authority implementation.
-Current R6 candidate coverage is partial: Component/Change/Job/Health/Artifact
-state vectors and final cross-repo freeze remain to be qualified in later PRs.
+Independent Component, removal, Change, Job, Health, Artifact and capability
+consumers execute the same pinned state vectors as Panel's actual owner adapters.
+Seven domain reference fixtures prove shared identity and owner revision scope;
+they add no feature CRUD schema. The command consumer proves backup.restore only;
+other catalog Actions require their own owner admission and capabilities.
+Cancellation vectors model cooperative test signals and safe points. Current
+Panel Job projections still report cancellation unsupported. Trusted fixture
+verifier outcomes prove that artifact metadata alone cannot authorize use.
 The dependency ratchet forbids Panel imports, external modules and Node runtime
 entrypoints. It is a guard for this proof stage, not a production Node design.
 

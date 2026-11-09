@@ -16,8 +16,16 @@ import (
 const publicContractImport = "github.com/MalenkiySolovey/solovey-contracts/management/v1"
 
 func forbiddenProofImport(dependency string) bool {
-	publicHost := dependency == "github.com/MalenkiySolovey/solovey-host/networkidentity" ||
-		dependency == "github.com/MalenkiySolovey/solovey-host/hostref"
+	publicHost := map[string]bool{
+		"github.com/MalenkiySolovey/solovey-host/networkidentity":        true,
+		"github.com/MalenkiySolovey/solovey-host/hostref":                true,
+		"github.com/MalenkiySolovey/solovey-host/auditrecord":            true,
+		"github.com/MalenkiySolovey/solovey-host/observation":            true,
+		"github.com/MalenkiySolovey/solovey-host/operationref":           true,
+		"github.com/MalenkiySolovey/solovey-host/secretref":              true,
+		"github.com/MalenkiySolovey/solovey-host/scheduler":              true,
+		"github.com/MalenkiySolovey/solovey-host/componenthost/manifest": true,
+	}[dependency]
 	if dependency != publicContractImport && !publicHost && strings.Contains(strings.Split(dependency, "/")[0], ".") {
 		return true
 	}
@@ -65,11 +73,17 @@ func TestNoPanelPrivateOrProductionRuntimeDependency(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var hostPin struct{ Module, Version string }
+	var hostPin struct {
+		Module, Version string
+		Dependencies    map[string]string
+	}
 	if err := json.Unmarshal(hostJSON, &hostPin); err != nil || hostPin.Module != "github.com/MalenkiySolovey/solovey-host" || hostPin.Version == "" {
 		t.Fatal("missing accepted Host pin")
 	}
-	expected := "module github.com/MalenkiySolovey/solovey-node\n\ngo 1.26.10\n\nrequire (\n\t" + pin.Module + " " + pin.Version + "\n\t" + hostPin.Module + " " + hostPin.Version + "\n)\n"
+	if len(hostPin.Dependencies) != 1 || hostPin.Dependencies["github.com/robfig/cron/v3"] != "v3.0.1" {
+		t.Fatal("unreviewed shared scheduler dependency")
+	}
+	expected := "module github.com/MalenkiySolovey/solovey-node\n\ngo 1.26.10\n\nrequire (\n\t" + pin.Module + " " + pin.Version + "\n\t" + hostPin.Module + " " + hostPin.Version + "\n)\n\nrequire github.com/robfig/cron/v3 v3.0.1 // indirect\n"
 	if strings.ReplaceAll(string(metadata), "\r\n", "\n") != expected {
 		t.Fatal("proof module gained unapproved dependency/toolchain/replace drift")
 	}

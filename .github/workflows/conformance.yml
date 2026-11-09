@@ -8,6 +8,10 @@ on:
 permissions:
   contents: read
 
+env:
+  GOWORK: 'off'
+  GOFLAGS: -mod=readonly
+
 jobs:
   conformance:
     runs-on: ubuntu-24.04
@@ -19,8 +23,9 @@ jobs:
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: '24.16.0'
-      - run: test -z "$(gofmt -l contracts conformance)"
-      - run: node contracts/tools/generate.mjs --check
+      - run: test -z "$(gofmt -l conformance)"
       - run: node scripts/verify-pin.mjs
-      - run: go test ./...
+      - run: node --test scripts/verify-pin.test.mjs
+      - run: go mod verify
+      - run: go test -race -count=1 ./...
       - run: go vet ./...

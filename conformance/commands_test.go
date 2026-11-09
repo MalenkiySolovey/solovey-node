@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	wire "github.com/MalenkiySolovey/solovey-node/contracts/management/v1"
+	wire "github.com/MalenkiySolovey/solovey-contracts/management/v1"
 )
 
 // Everything in this file is an in-memory conformance fixture, never a daemon,

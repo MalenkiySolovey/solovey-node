@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	wire "github.com/MalenkiySolovey/solovey-node/contracts/management/v1"
+	wire "github.com/MalenkiySolovey/solovey-contracts/management/v1"
 )
 
 // These are proof fixtures. No feature implementation, worker, process, storage
@@ -80,10 +80,12 @@ func TestAllSharedVectorKindsHaveIndependentConsumers(t *testing.T) {
 			t.Fatal(err)
 		}
 		counts[v.Kind]++
+		if v.Kind == "document" || v.Kind == "digest" || v.Kind == "reason" || v.Kind == "command" {
+			// Dedicated public codec and command consumers execute these cases.
+			continue
+		}
 		t.Run(v.ID, func(t *testing.T) {
 			switch v.Kind {
-			case "document", "digest", "reason", "command":
-				// The pinned public codec suite and TestSharedCommandVectors run these.
 			case "component":
 				component := wire.Component{Host: wire.HostRef{Kind: "LOCAL", ID: "local"}, Manifest: wire.ComponentManifest{ComponentID: "test-owner", Version: "1.0.0", Actions: []string{}}, State: "UNKNOWN", Reason: "UNKNOWN", LifecyclePhase: &v.Lifecycle}
 				scope := wire.ResourceRef{Host: component.Host, Owner: component.Manifest.ComponentID, ResourceID: "resource:fixture"}

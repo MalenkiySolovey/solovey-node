@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	wire "github.com/MalenkiySolovey/solovey-node/contracts/management/v1"
+	wire "github.com/MalenkiySolovey/solovey-contracts/management/v1"
 )
 
 // Only opaque owner revisions are modeled. There is no Inbound/Outbound/Route/

@@ -1,42 +1,48 @@
 # Solovey Node
 
-This separate repository currently holds the R6 management-contract proof scope
-only. It has no production Node implementation.
+This independent repository remains an R6 management-contract conformance proof.
+It has no production Node agent, daemon, listener, database or remote transport.
 
-The Panel repository owns the canonical `solovey.management/v1` semantic contract.
-`contracts/PIN.json` records source provenance and exact schema, generated-model,
-vector and bundle digests. Checked-in files are copied by Panel's pin tool, never
-maintained as a separate schema or registry. The module has no external dependency.
+The sole editable `solovey.management/v1` schema, codec, generator and golden
+vectors are maintained in
+[solovey-contracts](https://github.com/MalenkiySolovey/solovey-contracts).
+Node and Panel consume the same accepted immutable Go module, `v1.0.0`, with
+source commit, tree and normal module checksums recorded in `contracts/PIN.json`.
+Node has exactly this one external dependency and imports its public package,
+without importing Panel implementation or maintaining a copied codec/schema.
 
-Run from the repository root with Go 1.26.10 and Node 24.16.0 available:
+With Go 1.26.10, Node 24.16.0 and `GOWORK=off` set:
 
 ```text
-node contracts/tools/generate.mjs --check
 node scripts/verify-pin.mjs
-go test ./...
+node --test scripts/verify-pin.test.mjs
+go mod verify
+go test -race -count=1 ./...
 go vet ./...
 ```
 
-These checks work offline once the toolchains are installed. The public codec
-executes shared shape, serialization, reason and digest vectors. The in-memory
-`conformance` tests independently exercise trusted fixture grant binding,
-revision admission, one-use consumption, replay and ambiguous-delivery retry.
-The fixture map is not a credential store or an authority implementation.
-Independent Component, removal, Change, Job, Health, Artifact and capability
-consumers execute the same pinned state vectors as Panel's actual owner adapters.
-Seven domain reference fixtures prove shared identity and owner revision scope;
-they add no feature CRUD schema. The command consumer proves backup.restore only;
-other catalog Actions require their own owner admission and capabilities.
-Cancellation vectors model cooperative test signals and safe points. Current
-Panel Job projections still report cancellation unsupported. Trusted fixture
-verifier outcomes prove that artifact metadata alone cannot authorize use.
-The dependency ratchet forbids Panel imports, external modules and Node runtime
-entrypoints. It is a guard for this proof stage, not a production Node design.
+The verifier uses the actual Go resolver and rejects missing/wrong/mutable
+sources, checksum/provenance drift, local replace/workspace/overlay substitution,
+an editable schema or obsolete generator, and changed read-only fixtures.
+An intentional accepted pin update may refresh only `vectors.json` and
+`manifest.json` using `node scripts/verify-pin.mjs --sync-fixtures`.
 
-There is no agent, daemon, listener, remote transport, database, CoreRuntime,
-installer, update service or Web UI. No Node product architecture beyond the
-accepted versioned contracts is promised by this bootstrap.
+All 115 unchanged golden cases have real independent consumers: 47 shape/digest/
+reason cases, 23 trusted command-fixture cases, and 45 state/evidence/removal
+cases. The producer owns its codec implementation tests. Node's fixture owner
+models grant binding, one-use consumption, revision/replay and ambiguous delivery;
+grant JSON alone authenticates nothing. Seven owner-reference fixtures retain
+Host/resource/revision isolation. Capability UNKNOWN fails closed, SecretRef stays
+masked, and artifact metadata alone does not confer trusted admission.
 
-This minimal initial commit establishes main in the previously empty repository.
-All substantive R6 development after it uses normal branches, checks and PRs.
-It makes no software-license decision and publishes no release.
+The dependency ratchet permits only the accepted public Contracts import plus
+standard libraries, while preserving denial of Panel private/runtime/DB imports,
+network/exec/SQL dependencies, production directories and daemon entrypoints.
+The in-memory fixtures add no feature CRUD schema, token issuer, enrollment,
+CoreRuntime, installer, update service or Web UI.
+
+Contracts retains its original GPLv3 license and traceable Panel-source authorship.
+This migration makes no new license decision for the original Node proof harness
+and publishes no Node or Solovey UI product release. Rollback reverts the consumer
+pin/import/fixture/retirement chain through an ordinary reviewed source revert;
+published module tags and user data remain intact.

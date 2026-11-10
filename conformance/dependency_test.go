@@ -17,6 +17,8 @@ const publicContractImport = "github.com/MalenkiySolovey/solovey-contracts/manag
 
 func forbiddenProofImport(dependency string) bool {
 	publicHost := map[string]bool{
+		"github.com/MalenkiySolovey/solovey-host/coreruntime":            true,
+		"github.com/MalenkiySolovey/solovey-host/componenthost":          true,
 		"github.com/MalenkiySolovey/solovey-host/networkidentity":        true,
 		"github.com/MalenkiySolovey/solovey-host/hostref":                true,
 		"github.com/MalenkiySolovey/solovey-host/auditrecord":            true,
@@ -26,7 +28,8 @@ func forbiddenProofImport(dependency string) bool {
 		"github.com/MalenkiySolovey/solovey-host/scheduler":              true,
 		"github.com/MalenkiySolovey/solovey-host/componenthost/manifest": true,
 	}[dependency]
-	if dependency != publicContractImport && !publicHost && strings.Contains(strings.Split(dependency, "/")[0], ".") {
+	componentFixture := dependency == "github.com/MalenkiySolovey/solovey-component-observability-extra" || dependency == "github.com/robfig/cron/v3"
+	if dependency != publicContractImport && !publicHost && !componentFixture && strings.Contains(strings.Split(dependency, "/")[0], ".") {
 		return true
 	}
 	return dependency == "net" || (strings.HasPrefix(dependency, "net/") && dependency != "net/netip") || dependency == "os/exec" ||
@@ -41,6 +44,7 @@ func TestDependencyRatchetRejectsPrivateAndExecutionImports(t *testing.T) {
 		"github.com/MalenkiySolovey/solovey-contracts/internal/private",
 		"github.com/MalenkiySolovey/solovey-host/internal/private",
 		"github.com/MalenkiySolovey/solovey-host/componentkit/telegram",
+		"github.com/MalenkiySolovey/solovey-component-observability-extra/internal/private",
 		"example.invalid/other-module", "net", "net/http", "os/exec", "database/sql", "syscall", "plugin",
 	} {
 		t.Run(dependency, func(t *testing.T) {
@@ -83,7 +87,15 @@ func TestNoPanelPrivateOrProductionRuntimeDependency(t *testing.T) {
 	if len(hostPin.Dependencies) != 1 || hostPin.Dependencies["github.com/robfig/cron/v3"] != "v3.0.1" {
 		t.Fatal("unreviewed shared scheduler dependency")
 	}
-	expected := "module github.com/MalenkiySolovey/solovey-node\n\ngo 1.26.10\n\nrequire (\n\t" + pin.Module + " " + pin.Version + "\n\t" + hostPin.Module + " " + hostPin.Version + "\n)\n\nrequire github.com/robfig/cron/v3 v3.0.1 // indirect\n"
+	componentJSON, err := os.ReadFile("../host/COMPONENT_PIN.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var componentPin struct{ Module, Version string }
+	if err := json.Unmarshal(componentJSON, &componentPin); err != nil || componentPin.Module != "github.com/MalenkiySolovey/solovey-component-observability-extra" || componentPin.Version != "v0.1.0" {
+		t.Fatal("unapproved component fixture source")
+	}
+	expected := "module github.com/MalenkiySolovey/solovey-node\n\ngo 1.26.10\n\nrequire (\n\t" + componentPin.Module + " " + componentPin.Version + "\n\t" + pin.Module + " " + pin.Version + "\n\t" + hostPin.Module + " " + hostPin.Version + "\n\tgithub.com/robfig/cron/v3 v3.0.1\n)\n"
 	if strings.ReplaceAll(string(metadata), "\r\n", "\n") != expected {
 		t.Fatal("proof module gained unapproved dependency/toolchain/replace drift")
 	}

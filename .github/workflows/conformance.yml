@@ -28,6 +28,8 @@ jobs:
       - run: node --test scripts/verify-pin.test.mjs
       - run: node scripts/verify-host-pin.mjs
       - run: node --test scripts/verify-host-pin.test.mjs
+      - run: node scripts/verify-component-pin.mjs
+      - run: node --test scripts/verify-component-pin.test.mjs
       - run: go mod verify
       - run: go test -race -count=1 ./...
       - run: go vet ./...

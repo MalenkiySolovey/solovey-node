@@ -1,0 +1,16 @@
+{
+  "schema": "solovey.component.consumer-pin/v1",
+  "componentID": "observability-extra",
+  "module": "github.com/MalenkiySolovey/solovey-component-observability-extra",
+  "version": "v0.1.0",
+  "sourceCommit": "bbfc097c9ab2bdeb0e071571f7593bcedee48126",
+  "sourceTree": "d06d77f857f0d340d55f1aee02d8d9b772853571",
+  "moduleChecksum": "h1:Qczg9jmPtsLQ5V/7hr8Wk5ErlR5E9OblzxcO4Gym2gM=",
+  "goModChecksum": "h1:wii8Hu093M9V5KqKNB1IYHtFxbJjHMXLgWzuC7huwiI=",
+  "files": {
+    "component.go": "18b9fb4e9ffca2fd926d70478d8761dadf42bd0da675e4ea14199e0d8c37361d",
+    "component.json": "2078a51d7dd0b5f1737ad4d710f42c0f596aa40a340fcfd19e2f2ecdc23a2591",
+    "manifest.go": "45466e3f44d3299cfc2c17cac107b4cba6399e3aa52f28ce815f4d12a172de72",
+    "jobs/sampling.go": "47db63b31e367e9a06acc98c4f707a096baeae94ca43978b16e24663681994ec"
+  }
+}

@@ -30,7 +30,8 @@ Dependency checks allow only the accepted public packages and standard libraries
 
 The shared scheduled-job contract uses the existing `github.com/robfig/cron/v3` v3.0.1 dependency. The harness creates no scheduler or recurring work; its tests run finite jobs with explicit cancellation and deadlines.
 
-Host v0.3 runtime-selection tests call the same `coreruntime.Select` source
+The runtime-selection tests use the Product's accepted shared-source pins:
+Host `v0.11.0` and Contracts `v1.0.1`. They call the same `coreruntime.Select` source
 used by Panel Local Host. Deterministic adapters supply provider observations,
 bounded member effects and the existing owner lease. Fixtures exercise explicit
 Host/resource/provider identity, expected runtime generation, authorization
